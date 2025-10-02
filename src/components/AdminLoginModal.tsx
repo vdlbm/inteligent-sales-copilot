@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useTranslation } from "@/hooks/useTranslation";
 
 interface AdminLoginModalProps {
   open: boolean;
@@ -13,7 +12,6 @@ interface AdminLoginModalProps {
 }
 
 export function AdminLoginModal({ open, onOpenChange, onLoginSuccess }: AdminLoginModalProps) {
-  const { t } = useTranslation();
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
@@ -26,7 +24,7 @@ export function AdminLoginModal({ open, onOpenChange, onLoginSuccess }: AdminLog
       onLoginSuccess();
       onOpenChange(false);
     } else {
-      setError(t("invalidCredentials"));
+      setError("Invalid credentials");
     }
   };
 
@@ -40,7 +38,7 @@ export function AdminLoginModal({ open, onOpenChange, onLoginSuccess }: AdminLog
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{t("adminLogin")}</DialogTitle>
+          <DialogTitle>Admin Login</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           {error && (
@@ -49,7 +47,7 @@ export function AdminLoginModal({ open, onOpenChange, onLoginSuccess }: AdminLog
             </Alert>
           )}
           <div className="space-y-2">
-            <Label htmlFor="username">{t("username")}</Label>
+            <Label htmlFor="username">Username</Label>
             <Input
               id="username"
               value={username}
@@ -59,7 +57,7 @@ export function AdminLoginModal({ open, onOpenChange, onLoginSuccess }: AdminLog
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">{t("password")}</Label>
+            <Label htmlFor="password">Password</Label>
             <Input
               id="password"
               type="password"
@@ -70,7 +68,7 @@ export function AdminLoginModal({ open, onOpenChange, onLoginSuccess }: AdminLog
             />
           </div>
           <Button onClick={handleLogin} className="w-full">
-            {t("login")}
+            Login
           </Button>
         </div>
       </DialogContent>

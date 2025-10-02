@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useTranslation } from "@/hooks/useTranslation";
 import { CheckCircle2 } from "lucide-react";
 
 interface ForgotPasswordModalProps {
@@ -13,7 +12,6 @@ interface ForgotPasswordModalProps {
 }
 
 export function ForgotPasswordModal({ open, onOpenChange }: ForgotPasswordModalProps) {
-  const { t } = useTranslation();
   const [email, setEmail] = React.useState("");
   const [submitted, setSubmitted] = React.useState(false);
 
@@ -37,30 +35,30 @@ export function ForgotPasswordModal({ open, onOpenChange }: ForgotPasswordModalP
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t("forgotPassword")}</DialogTitle>
-          <DialogDescription>{t("forgotPasswordDescription")}</DialogDescription>
+          <DialogTitle>Forgot your password?</DialogTitle>
+          <DialogDescription>Enter your username or email to receive password reset instructions.</DialogDescription>
         </DialogHeader>
         
         {!submitted ? (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="reset-email">{t("usernameOrEmail")}</Label>
+              <Label htmlFor="reset-email">Username or Email</Label>
               <Input
                 id="reset-email"
                 type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder={t("enterUsernameOrEmail")}
+                placeholder="Enter username or email"
                 required
               />
             </div>
             
             <div className="flex gap-2 justify-end">
               <Button type="button" variant="outline" onClick={handleClose}>
-                {t("cancel")}
+                Cancel
               </Button>
               <Button type="submit">
-                {t("sendResetLink")}
+                Send Reset Link
               </Button>
             </div>
           </form>
@@ -68,7 +66,7 @@ export function ForgotPasswordModal({ open, onOpenChange }: ForgotPasswordModalP
           <Alert className="bg-success/10 border-success">
             <CheckCircle2 className="h-4 w-4 text-success" />
             <AlertDescription className="text-success">
-              {t("resetLinkSent")}
+              Password reset instructions have been sent to your email.
             </AlertDescription>
           </Alert>
         )}

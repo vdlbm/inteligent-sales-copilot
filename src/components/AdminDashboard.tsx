@@ -4,7 +4,6 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useTranslation } from "@/hooks/useTranslation";
 import { UserStats } from "@/types/email";
 import { Search } from "lucide-react";
 
@@ -25,7 +24,6 @@ const mockUserStats: UserStats[] = [
 ];
 
 export function AdminDashboard({ open, onOpenChange }: AdminDashboardProps) {
-  const { t } = useTranslation();
   const [selectedUser, setSelectedUser] = React.useState<UserStats | null>(mockUserStats[0]);
   const [searchQuery, setSearchQuery] = React.useState("");
 
@@ -38,13 +36,13 @@ export function AdminDashboard({ open, onOpenChange }: AdminDashboardProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl">{t("adminDashboard")}</DialogTitle>
+          <DialogTitle className="text-2xl">Confidential Usage Dashboard</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">
           {/* Search/Filter */}
           <div className="space-y-2">
-            <Label htmlFor="user-search">{t("searchUsers")}</Label>
+            <Label htmlFor="user-search">Search users...</Label>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
@@ -52,12 +50,12 @@ export function AdminDashboard({ open, onOpenChange }: AdminDashboardProps) {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={t("searchUsers")}
+                placeholder="Search users..."
                 className="pl-10"
               />
             </div>
             {filteredUsers.length === 0 && (
-              <p className="text-sm text-muted-foreground">{t("noUserFound")}</p>
+              <p className="text-sm text-muted-foreground">No user found. Search again or create new.</p>
             )}
           </div>
 
@@ -66,11 +64,11 @@ export function AdminDashboard({ open, onOpenChange }: AdminDashboardProps) {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>{t("name")}</TableHead>
-                  <TableHead>{t("username")}</TableHead>
-                  <TableHead className="text-right">{t("totalEmails")}</TableHead>
-                  <TableHead className="text-right">{t("confidentialUses")}</TableHead>
-                  <TableHead className="text-right">{t("confidentialPercentage")}</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Username</TableHead>
+                  <TableHead className="text-right">Total Emails</TableHead>
+                  <TableHead className="text-right">Confidential Uses</TableHead>
+                  <TableHead className="text-right">Confidential %</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -81,21 +79,20 @@ export function AdminDashboard({ open, onOpenChange }: AdminDashboardProps) {
                     onClick={() => setSelectedUser(user)}
                   >
                     <TableCell className="font-medium">{user.name}</TableCell>
-                    <TableCell>{user.username}</TableCell>
+                    <TableCell className="text-muted-foreground">{user.username}</TableCell>
                     <TableCell className="text-right">{user.total_processed}</TableCell>
                     <TableCell className="text-right">{user.confidential_used_count}</TableCell>
-                    <TableCell className="text-right">{user.confidential_percentage.toFixed(1)}%</TableCell>
+                    <TableCell className="text-right font-semibold">{user.confidential_percentage.toFixed(1)}%</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </div>
 
-          {/* Selected User Stats */}
+          {/* Pie Chart Visualization */}
           {selectedUser && (
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">{t("usageStats")} - {selectedUser.name}</h3>
-              
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Usage Statistics for {selectedUser.name}</h3>
               <Card>
                 <CardContent className="pt-6">
                   <div className="space-y-6">
@@ -105,7 +102,7 @@ export function AdminDashboard({ open, onOpenChange }: AdminDashboardProps) {
                         viewBox="0 0 200 200" 
                         className="w-64 h-64"
                         role="img"
-                        aria-label={`${t("confidentialUsage")}: ${selectedUser.confidential_percentage.toFixed(1)}%, ${t("nonConfidentialUsage")}: ${(100 - selectedUser.confidential_percentage).toFixed(1)}%`}
+                        aria-label={`Confidential: ${selectedUser.confidential_percentage.toFixed(1)}%, Non-Confidential: ${(100 - selectedUser.confidential_percentage).toFixed(1)}%`}
                       >
                         {/* Background circle */}
                         <circle cx="100" cy="100" r="80" fill="#22c55e" />
@@ -134,7 +131,7 @@ export function AdminDashboard({ open, onOpenChange }: AdminDashboardProps) {
                           {selectedUser.confidential_percentage.toFixed(1)}%
                         </text>
                         <text x="100" y="110" textAnchor="middle" className="text-xs fill-muted-foreground">
-                          {t("confidentialUsage")}
+                          Confidential
                         </text>
                       </svg>
                       
@@ -142,11 +139,11 @@ export function AdminDashboard({ open, onOpenChange }: AdminDashboardProps) {
                       <div className="flex gap-6 mt-4" role="list">
                         <div className="flex items-center gap-2" role="listitem">
                           <div className="w-4 h-4 rounded-full bg-destructive" aria-hidden="true" />
-                          <span className="text-sm font-medium">{t("confidentialUsage")}</span>
+                          <span className="text-sm font-medium">Confidential</span>
                         </div>
                         <div className="flex items-center gap-2" role="listitem">
                           <div className="w-4 h-4 rounded-full bg-success" aria-hidden="true" />
-                          <span className="text-sm font-medium">{t("nonConfidentialUsage")}</span>
+                          <span className="text-sm font-medium">Non-Confidential</span>
                         </div>
                       </div>
                     </div>
@@ -159,11 +156,11 @@ export function AdminDashboard({ open, onOpenChange }: AdminDashboardProps) {
                     >
                       <div className="text-center p-4 bg-destructive/10 rounded-lg">
                         <div className="text-3xl font-bold text-destructive">{selectedUser.confidential_percentage.toFixed(1)}%</div>
-                        <div className="text-sm text-muted-foreground mt-1">{t("confidentialUsage")}</div>
+                        <div className="text-sm text-muted-foreground mt-1">Confidential</div>
                       </div>
                       <div className="text-center p-4 bg-success/10 rounded-lg">
                         <div className="text-3xl font-bold text-success">{(100 - selectedUser.confidential_percentage).toFixed(1)}%</div>
-                        <div className="text-sm text-muted-foreground mt-1">{t("nonConfidentialUsage")}</div>
+                        <div className="text-sm text-muted-foreground mt-1">Non-Confidential</div>
                       </div>
                     </div>
                   </div>

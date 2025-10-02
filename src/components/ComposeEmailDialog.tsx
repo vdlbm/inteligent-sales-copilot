@@ -10,7 +10,6 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronDown, ChevronUp, Send, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { EmailDraft } from "@/types/email";
-import { useTranslation } from "@/hooks/useTranslation";
 
 interface ComposeEmailDialogProps {
   open: boolean;
@@ -24,7 +23,6 @@ interface ComposeEmailDialogProps {
 
 export function ComposeEmailDialog({ open, onOpenChange, preFillData }: ComposeEmailDialogProps) {
   const { toast } = useToast();
-  const { t } = useTranslation();
   const [showCcBcc, setShowCcBcc] = React.useState(false);
   const [confidential, setConfidential] = React.useState(false);
   const [showConfidentialWarning, setShowConfidentialWarning] = React.useState(false);
@@ -71,8 +69,8 @@ export function ComposeEmailDialog({ open, onOpenChange, preFillData }: ComposeE
     });
     setShowConfidentialWarning(false);
     toast({
-      title: t("confidentialModeEnabled"),
-      description: t("confidentialDescription"),
+      title: "Confidential mode enabled",
+      description: "This email will be marked as confidential.",
     });
   };
 
@@ -110,8 +108,8 @@ export function ComposeEmailDialog({ open, onOpenChange, preFillData }: ComposeE
     });
 
     toast({
-      title: t("emailSent"),
-      description: confidential ? t("confidentialEmailSent") : t("emailSentSuccess"),
+      title: "Email sent",
+      description: confidential ? "Confidential email sent securely." : "Email sent successfully.",
     });
 
     onOpenChange(false);
@@ -139,7 +137,7 @@ export function ComposeEmailDialog({ open, onOpenChange, preFillData }: ComposeE
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <div className="flex items-center justify-between">
-              <DialogTitle>{t("compose")}</DialogTitle>
+              <DialogTitle>Compose Email</DialogTitle>
               <div className="flex items-center gap-3">
                 {confidential && (
                   <Badge variant="destructive" className="gap-1">
@@ -149,13 +147,13 @@ export function ComposeEmailDialog({ open, onOpenChange, preFillData }: ComposeE
                 )}
                 <div className="flex items-center gap-2">
                   <Label htmlFor="confidential" className="text-sm cursor-pointer">
-                    {t("confidential")}
+                    Confidential
                   </Label>
                   <Switch
                     id="confidential"
                     checked={confidential}
                     onCheckedChange={handleConfidentialToggle}
-                    title={t("confidentialTooltip")}
+                    title="Confidential emails are encrypted and limited in visibility"
                   />
                 </div>
               </div>
@@ -164,7 +162,7 @@ export function ComposeEmailDialog({ open, onOpenChange, preFillData }: ComposeE
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="to">{t("to")}</Label>
+              <Label htmlFor="to">To</Label>
               <Input
                 id="to"
                 type="email"
@@ -181,7 +179,7 @@ export function ComposeEmailDialog({ open, onOpenChange, preFillData }: ComposeE
               className="gap-2"
             >
               {showCcBcc ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-              {showCcBcc ? t("hide") : t("show")} {t("ccBcc")}
+              {showCcBcc ? "Hide" : "Show"} Cc/Bcc
             </Button>
 
             {showCcBcc && (
@@ -210,20 +208,20 @@ export function ComposeEmailDialog({ open, onOpenChange, preFillData }: ComposeE
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="subject">{t("subject")}</Label>
+              <Label htmlFor="subject">Subject</Label>
               <Input
                 id="subject"
-                placeholder={t("emailSubject")}
+                placeholder="Email subject"
                 value={draft.subject}
                 onChange={(e) => setDraft({ ...draft, subject: e.target.value })}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="body">{t("body")}</Label>
+              <Label htmlFor="body">Body</Label>
               <Textarea
                 id="body"
-                placeholder={t("writeMessage")}
+                placeholder="Write your message..."
                 className="min-h-[300px]"
                 value={draft.body}
                 onChange={(e) => setDraft({ ...draft, body: e.target.value })}
@@ -232,11 +230,11 @@ export function ComposeEmailDialog({ open, onOpenChange, preFillData }: ComposeE
 
             <div className="flex justify-end gap-2 pt-4">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                {t("cancel")}
+                Cancel
               </Button>
               <Button onClick={handleSend} className="gap-2">
                 <Send className="h-4 w-4" />
-                {t("send")}
+                Send
               </Button>
             </div>
           </div>
@@ -247,15 +245,15 @@ export function ComposeEmailDialog({ open, onOpenChange, preFillData }: ComposeE
       <AlertDialog open={showConfidentialWarning} onOpenChange={setShowConfidentialWarning}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{t("confidentialModeEnabled")}</AlertDialogTitle>
+            <AlertDialogTitle>Confidential mode enabled</AlertDialogTitle>
             <AlertDialogDescription className="text-base">
-              {t("confidentialWarning")}
+              Note: marking this email as confidential prevents most users from reading its contents within the app, but in the event of a data leak, breach, or authorized forensic review, access to confidential emails may be required to investigate. Do you want to proceed?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleConfidentialCancel}>{t("cancel")}</AlertDialogCancel>
+            <AlertDialogCancel onClick={handleConfidentialCancel}>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={handleConfidentialConfirm}>
-              {t("proceedConfidential")}
+              Proceed (Mark Confidential)
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -265,14 +263,14 @@ export function ComposeEmailDialog({ open, onOpenChange, preFillData }: ComposeE
       <AlertDialog open={showSendConfirmation} onOpenChange={setShowSendConfirmation}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{t("confirmSend")}</AlertDialogTitle>
+            <AlertDialogTitle>Confirm send</AlertDialogTitle>
             <AlertDialogDescription>
-              {t("confirmSendConfidential")}
+              You are about to send a confidential email. Confirm send.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-            <AlertDialogAction onClick={sendEmail}>{t("confirmSend")}</AlertDialogAction>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={sendEmail}>Confirm send</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
