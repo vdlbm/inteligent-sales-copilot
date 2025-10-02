@@ -6,15 +6,32 @@ import { EmailCard } from "@/components/EmailCard";
 import { EmailDetail } from "@/components/EmailDetail";
 import { ComposeEmailDialog } from "@/components/ComposeEmailDialog";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageToggle } from "@/components/LanguageToggle";
+import { AdminLoginModal } from "@/components/AdminLoginModal";
+import { AdminDashboard } from "@/components/AdminDashboard";
 import { mockEmails } from "@/data/mockEmails";
 import { EmailAnalysis } from "@/types/email";
-import { Search, Filter, Sparkles, Mail } from "lucide-react";
+import { Search, Filter, Sparkles, Mail, Shield } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const Index = () => {
+  const { t } = useTranslation();
   const [selectedEmail, setSelectedEmail] = React.useState<EmailAnalysis | null>(null);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [urgencyFilter, setUrgencyFilter] = React.useState<string>("all");
   const [composeOpen, setComposeOpen] = React.useState(false);
+  const [adminLoginOpen, setAdminLoginOpen] = React.useState(false);
+  const [adminDashboardOpen, setAdminDashboardOpen] = React.useState(false);
+  const [composePrefill, setComposePrefill] = React.useState<{ to?: string; subject?: string; body?: string } | undefined>();
+
+  const handleActionClick = (actionData: { to: string; subject: string; body: string }) => {
+    setComposePrefill(actionData);
+    setComposeOpen(true);
+  };
+
+  const handleAdminLogin = () => {
+    setAdminDashboardOpen(true);
+  };
 
   const filteredEmails = mockEmails
     .filter((email) => {
@@ -42,15 +59,20 @@ const Index = () => {
                 <Sparkles className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-foreground">IBM Email Analyzer</h1>
-                <p className="text-sm text-muted-foreground">Asistente inteligente para comerciales</p>
+                <h1 className="text-2xl font-bold text-foreground">{t("appTitle")}</h1>
+                <p className="text-sm text-muted-foreground">{t("appSubtitle")}</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <LanguageToggle />
               <ThemeToggle />
+              <Button variant="outline" className="gap-2" onClick={() => setAdminLoginOpen(true)}>
+                <Shield className="h-4 w-4" />
+                {t("admin")}
+              </Button>
               <Button className="gap-2" onClick={() => setComposeOpen(true)}>
                 <Mail className="h-4 w-4" />
-                Compose Email
+                {t("composeEmail")}
               </Button>
             </div>
           </div>
@@ -66,7 +88,7 @@ const Index = () => {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Buscar correos..."
+                  placeholder={t("searchEmails")}
                   className="pl-10"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -77,15 +99,15 @@ const Index = () => {
                 <Filter className="h-4 w-4 text-muted-foreground" />
                 <Select value={urgencyFilter} onValueChange={setUrgencyFilter}>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Filtrar por urgencia" />
+                    <SelectValue placeholder={t("filterByUrgency")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Todas las urgencias</SelectItem>
-                    <SelectItem value="5">Crítica (5)</SelectItem>
-                    <SelectItem value="4">Alta (4)</SelectItem>
-                    <SelectItem value="3">Media (3)</SelectItem>
-                    <SelectItem value="2">Baja-Media (2)</SelectItem>
-                    <SelectItem value="1">Baja (1)</SelectItem>
+                    <SelectItem value="all">{t("allUrgencies")}</SelectItem>
+                    <SelectItem value="5">{t("critical")} (5)</SelectItem>
+                    <SelectItem value="4">{t("high")} (4)</SelectItem>
+                    <SelectItem value="3">{t("medium")} (3)</SelectItem>
+                    <SelectItem value="2">{t("lowMedium")} (2)</SelectItem>
+                    <SelectItem value="1">{t("low")} (1)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -103,7 +125,7 @@ const Index = () => {
               {filteredEmails.length === 0 && (
                 <div className="text-center py-8 text-muted-foreground">
                   <Mail className="h-12 w-12 mx-auto mb-3 opacity-20" />
-                  <p>No se encontraron correos</p>
+                  <p>{t("noEmailsFound")}</p>
                 </div>
               )}
             </div>
@@ -112,13 +134,13 @@ const Index = () => {
           {/* Email Detail */}
           <div className="lg:col-span-2 max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
             {selectedEmail ? (
-              <EmailDetail email={selectedEmail} />
+              <EmailDetail email={selectedEmail} onActionClick={handleActionClick} />
             ) : (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center text-muted-foreground">
                   <Mail className="h-16 w-16 mx-auto mb-4 opacity-20" />
-                  <p className="text-lg font-medium">Selecciona un correo para ver los detalles</p>
-                  <p className="text-sm mt-2">El análisis completo aparecerá aquí</p>
+                  <p className="text-lg font-medium">{t("selectEmail")}</p>
+                  <p className="text-sm mt-2">{t("fullAnalysis")}</p>
                 </div>
               </div>
             )}
@@ -126,7 +148,9 @@ const Index = () => {
         </div>
       </div>
 
-      <ComposeEmailDialog open={composeOpen} onOpenChange={setComposeOpen} />
+      <ComposeEmailDialog open={composeOpen} onOpenChange={setComposeOpen} preFillData={composePrefill} />
+      <AdminLoginModal open={adminLoginOpen} onOpenChange={setAdminLoginOpen} onLoginSuccess={handleAdminLogin} />
+      <AdminDashboard open={adminDashboardOpen} onOpenChange={setAdminDashboardOpen} />
     </div>
   );
 };

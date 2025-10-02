@@ -22,7 +22,8 @@ export const mockEmails: EmailAnalysis[] = [
       {
         action: "Convocar reunión urgente equipo técnico hoy",
         priority: 1,
-        template: "Estimada María,\n\nHemos recibido su solicitud de RFP para la migración cloud. Nos complace confirmar que podemos presentar una propuesta completa antes del 15/10. ¿Podríamos agendar una llamada mañana para aclarar requisitos específicos?\n\nSaludos,\n[Tu nombre]"
+        template: "Estimada María,\n\nHemos recibido su solicitud de RFP para la migración cloud. Nos complace confirmar que podemos presentar una propuesta completa antes del 15/10. ¿Podríamos agendar una llamada mañana para aclarar requisitos específicos?\n\nSaludos,\n[Tu nombre]",
+        contact: "maria.gonzalez@techcorp.es"
       },
       {
         action: "Solicitar documentación técnica detallada al cliente",

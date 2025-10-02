@@ -19,6 +19,7 @@ export interface EmailAnalysis {
     action: string;
     priority: number;
     template?: string;
+    contact?: string;
   }>;
   contact_suggestions: Array<{
     name: string;
@@ -31,6 +32,7 @@ export interface EmailAnalysis {
   confidential?: boolean;
   user_confirmation_for_confidential?: boolean;
   audit_hash?: string;
+  ui_language?: "en" | "es";
 }
 
 export interface EmailDraft {
@@ -43,4 +45,13 @@ export interface EmailDraft {
   user_confirmation_for_confidential: boolean;
   audit_hash: string;
   attachments?: File[];
+  linked_compose_draft_id?: string;
+}
+
+export interface AdminDashboardData {
+  user_selected: string;
+  confidential_usage_percent: {
+    used: number;
+    not_used: number;
+  };
 }

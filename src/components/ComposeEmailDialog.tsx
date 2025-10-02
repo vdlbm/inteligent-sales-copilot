@@ -10,14 +10,21 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronDown, ChevronUp, Send, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { EmailDraft } from "@/types/email";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface ComposeEmailDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  preFillData?: {
+    to?: string;
+    subject?: string;
+    body?: string;
+  };
 }
 
-export function ComposeEmailDialog({ open, onOpenChange }: ComposeEmailDialogProps) {
+export function ComposeEmailDialog({ open, onOpenChange, preFillData }: ComposeEmailDialogProps) {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [showCcBcc, setShowCcBcc] = React.useState(false);
   const [confidential, setConfidential] = React.useState(false);
   const [showConfidentialWarning, setShowConfidentialWarning] = React.useState(false);
@@ -32,6 +39,18 @@ export function ComposeEmailDialog({ open, onOpenChange }: ComposeEmailDialogPro
     user_confirmation_for_confidential: false,
     audit_hash: "",
   });
+
+  // Pre-fill draft when preFillData changes
+  React.useEffect(() => {
+    if (preFillData && open) {
+      setDraft(prev => ({
+        ...prev,
+        to: preFillData.to || prev.to,
+        subject: preFillData.subject || prev.subject,
+        body: preFillData.body || prev.body,
+      }));
+    }
+  }, [preFillData, open]);
 
   const handleConfidentialToggle = (checked: boolean) => {
     if (checked) {
@@ -52,8 +71,8 @@ export function ComposeEmailDialog({ open, onOpenChange }: ComposeEmailDialogPro
     });
     setShowConfidentialWarning(false);
     toast({
-      title: "Confidential mode enabled",
-      description: "This email will be marked as confidential.",
+      title: t("confidentialModeEnabled"),
+      description: t("confidentialDescription"),
     });
   };
 
@@ -91,8 +110,8 @@ export function ComposeEmailDialog({ open, onOpenChange }: ComposeEmailDialogPro
     });
 
     toast({
-      title: "Email sent",
-      description: confidential ? "Confidential email sent securely." : "Email sent successfully.",
+      title: t("emailSent"),
+      description: confidential ? t("confidentialEmailSent") : t("emailSentSuccess"),
     });
 
     onOpenChange(false);
@@ -120,7 +139,7 @@ export function ComposeEmailDialog({ open, onOpenChange }: ComposeEmailDialogPro
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <div className="flex items-center justify-between">
-              <DialogTitle>Compose Email</DialogTitle>
+              <DialogTitle>{t("compose")}</DialogTitle>
               <div className="flex items-center gap-3">
                 {confidential && (
                   <Badge variant="destructive" className="gap-1">
@@ -130,13 +149,13 @@ export function ComposeEmailDialog({ open, onOpenChange }: ComposeEmailDialogPro
                 )}
                 <div className="flex items-center gap-2">
                   <Label htmlFor="confidential" className="text-sm cursor-pointer">
-                    Confidential
+                    {t("confidential")}
                   </Label>
                   <Switch
                     id="confidential"
                     checked={confidential}
                     onCheckedChange={handleConfidentialToggle}
-                    title="Confidential emails are encrypted and limited in visibility. In case of security or legal review, authorized access may be performed."
+                    title={t("confidentialTooltip")}
                   />
                 </div>
               </div>
@@ -145,7 +164,7 @@ export function ComposeEmailDialog({ open, onOpenChange }: ComposeEmailDialogPro
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="to">To</Label>
+              <Label htmlFor="to">{t("to")}</Label>
               <Input
                 id="to"
                 type="email"
@@ -162,7 +181,7 @@ export function ComposeEmailDialog({ open, onOpenChange }: ComposeEmailDialogPro
               className="gap-2"
             >
               {showCcBcc ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-              {showCcBcc ? "Hide" : "Show"} Cc/Bcc
+              {showCcBcc ? t("hide") : t("show")} {t("ccBcc")}
             </Button>
 
             {showCcBcc && (
@@ -191,20 +210,20 @@ export function ComposeEmailDialog({ open, onOpenChange }: ComposeEmailDialogPro
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="subject">Subject</Label>
+              <Label htmlFor="subject">{t("subject")}</Label>
               <Input
                 id="subject"
-                placeholder="Email subject"
+                placeholder={t("emailSubject")}
                 value={draft.subject}
                 onChange={(e) => setDraft({ ...draft, subject: e.target.value })}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="body">Body</Label>
+              <Label htmlFor="body">{t("body")}</Label>
               <Textarea
                 id="body"
-                placeholder="Write your message..."
+                placeholder={t("writeMessage")}
                 className="min-h-[300px]"
                 value={draft.body}
                 onChange={(e) => setDraft({ ...draft, body: e.target.value })}
@@ -213,11 +232,11 @@ export function ComposeEmailDialog({ open, onOpenChange }: ComposeEmailDialogPro
 
             <div className="flex justify-end gap-2 pt-4">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                Cancel
+                {t("cancel")}
               </Button>
               <Button onClick={handleSend} className="gap-2">
                 <Send className="h-4 w-4" />
-                Send
+                {t("send")}
               </Button>
             </div>
           </div>
@@ -228,17 +247,15 @@ export function ComposeEmailDialog({ open, onOpenChange }: ComposeEmailDialogPro
       <AlertDialog open={showConfidentialWarning} onOpenChange={setShowConfidentialWarning}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Confidential mode enabled</AlertDialogTitle>
+            <AlertDialogTitle>{t("confidentialModeEnabled")}</AlertDialogTitle>
             <AlertDialogDescription className="text-base">
-              Note: marking this email as confidential prevents most users from reading its contents 
-              within the app, but in the event of a data leak, breach, or authorized forensic review, 
-              access to confidential emails may be required to investigate. Do you want to proceed?
+              {t("confidentialWarning")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleConfidentialCancel}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel onClick={handleConfidentialCancel}>{t("cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleConfidentialConfirm}>
-              Proceed (Mark Confidential)
+              {t("proceedConfidential")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -248,14 +265,14 @@ export function ComposeEmailDialog({ open, onOpenChange }: ComposeEmailDialogPro
       <AlertDialog open={showSendConfirmation} onOpenChange={setShowSendConfirmation}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Confirm send</AlertDialogTitle>
+            <AlertDialogTitle>{t("confirmSend")}</AlertDialogTitle>
             <AlertDialogDescription>
-              You are about to send a confidential email. Confirm send.
+              {t("confirmSendConfidential")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={sendEmail}>Confirm Send</AlertDialogAction>
+            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={sendEmail}>{t("confirmSend")}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
