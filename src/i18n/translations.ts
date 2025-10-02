@@ -100,11 +100,19 @@ export const translations = {
     originalEmailRaw: "Original email (raw)",
     
     // Priority labels
-    veryHigh: "Very High",
-    priorityHigh: "High",
-    priorityMedium: "Medium",
-    priorityLow: "Low",
-    veryLow: "Very Low",
+    urgency5: "Critical",
+    urgency4: "High",
+    urgency3: "Medium",
+    urgency2: "Low",
+    urgency1: "Minimal",
+    urgencyTooltipTitle: "Urgency (1-5)",
+    urgencyTooltipDescription: "Scale showing how urgently a reply or action is required: 5 = Very High (respond within 24h), 1 = Very Low (no response needed).",
+    
+    // Login
+    welcomeToSalesProductivity: "Welcome to Sales Productivity",
+    signIn: "Sign In",
+    rememberMe: "Remember me",
+    testUsers: "Test users: victor/victor (user), admin/admin (admin)",
   },
   es: {
     // Header
@@ -207,10 +215,18 @@ export const translations = {
     originalEmailRaw: "Correo original (sin procesar)",
     
     // Priority labels
-    veryHigh: "Muy alta",
-    priorityHigh: "Alta",
-    priorityMedium: "Media",
-    priorityLow: "Baja",
-    veryLow: "Muy baja",
+    urgency5: "Crítica",
+    urgency4: "Alta",
+    urgency3: "Media",
+    urgency2: "Baja",
+    urgency1: "Mínima",
+    urgencyTooltipTitle: "Urgencia (1-5)",
+    urgencyTooltipDescription: "Escala que indica la urgencia de responder o actuar: 5 = Muy alta (responder en 24h), 1 = Muy baja (no se requiere respuesta).",
+    
+    // Login
+    welcomeToSalesProductivity: "Bienvenido a la productividad de ventas",
+    signIn: "Iniciar sesión",
+    rememberMe: "Recordarme",
+    testUsers: "Usuarios de prueba: victor/victor (usuario), admin/admin (admin)",
   }
 };

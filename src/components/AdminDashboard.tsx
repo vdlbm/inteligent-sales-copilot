@@ -99,37 +99,64 @@ export function AdminDashboard({ open, onOpenChange }: AdminDashboardProps) {
               <Card>
                 <CardContent className="pt-6">
                   <div className="space-y-6">
-                    {/* Visual bar chart representation */}
-                    <div className="space-y-4">
-                      <div>
-                        <div className="flex justify-between mb-2">
-                          <span className="text-sm font-medium">{t("confidentialUsage")}</span>
-                          <span className="text-sm font-semibold">{selectedUser.confidential_percentage.toFixed(1)}%</span>
-                        </div>
-                        <div className="h-8 bg-muted rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-destructive transition-all duration-500"
-                            style={{ width: `${selectedUser.confidential_percentage}%` }}
-                          />
-                        </div>
-                      </div>
+                    {/* Pie Chart Visualization */}
+                    <div className="flex flex-col items-center">
+                      <svg 
+                        viewBox="0 0 200 200" 
+                        className="w-64 h-64"
+                        role="img"
+                        aria-label={`${t("confidentialUsage")}: ${selectedUser.confidential_percentage.toFixed(1)}%, ${t("nonConfidentialUsage")}: ${(100 - selectedUser.confidential_percentage).toFixed(1)}%`}
+                      >
+                        {/* Background circle */}
+                        <circle cx="100" cy="100" r="80" fill="#22c55e" />
+                        {/* Confidential slice (red) */}
+                        <path
+                          d={(() => {
+                            const percentage = selectedUser.confidential_percentage;
+                            const angle = (percentage / 100) * 360;
+                            const radians = (angle - 90) * (Math.PI / 180);
+                            const x = 100 + 80 * Math.cos(radians);
+                            const y = 100 + 80 * Math.sin(radians);
+                            const largeArc = angle > 180 ? 1 : 0;
+                            
+                            if (percentage === 0) return "";
+                            if (percentage === 100) return "M100,20 A80,80 0 1,1 99.99,20 Z";
+                            
+                            return `M100,100 L100,20 A80,80 0 ${largeArc},1 ${x},${y} Z`;
+                          })()}
+                          fill="#ef4444"
+                          className="transition-all duration-500"
+                        />
+                        {/* Center circle for donut effect */}
+                        <circle cx="100" cy="100" r="50" fill="hsl(var(--background))" />
+                        {/* Center text */}
+                        <text x="100" y="95" textAnchor="middle" className="text-2xl font-bold fill-foreground">
+                          {selectedUser.confidential_percentage.toFixed(1)}%
+                        </text>
+                        <text x="100" y="110" textAnchor="middle" className="text-xs fill-muted-foreground">
+                          {t("confidentialUsage")}
+                        </text>
+                      </svg>
                       
-                      <div>
-                        <div className="flex justify-between mb-2">
-                          <span className="text-sm font-medium">{t("nonConfidentialUsage")}</span>
-                          <span className="text-sm font-semibold">{(100 - selectedUser.confidential_percentage).toFixed(1)}%</span>
+                      {/* Legend */}
+                      <div className="flex gap-6 mt-4" role="list">
+                        <div className="flex items-center gap-2" role="listitem">
+                          <div className="w-4 h-4 rounded-full bg-destructive" aria-hidden="true" />
+                          <span className="text-sm font-medium">{t("confidentialUsage")}</span>
                         </div>
-                        <div className="h-8 bg-muted rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-success transition-all duration-500"
-                            style={{ width: `${100 - selectedUser.confidential_percentage}%` }}
-                          />
+                        <div className="flex items-center gap-2" role="listitem">
+                          <div className="w-4 h-4 rounded-full bg-success" aria-hidden="true" />
+                          <span className="text-sm font-medium">{t("nonConfidentialUsage")}</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Summary stats */}
-                    <div className="grid grid-cols-2 gap-4 pt-4 border-t">
+                    <div 
+                      className="grid grid-cols-2 gap-4 pt-4 border-t"
+                      aria-live="polite"
+                      aria-atomic="true"
+                    >
                       <div className="text-center p-4 bg-destructive/10 rounded-lg">
                         <div className="text-3xl font-bold text-destructive">{selectedUser.confidential_percentage.toFixed(1)}%</div>
                         <div className="text-sm text-muted-foreground mt-1">{t("confidentialUsage")}</div>

@@ -79,14 +79,16 @@ const Index = () => {
               </div>
               <LanguageToggle />
               <ThemeToggle />
-              <Button 
-                variant="outline" 
-                className="gap-2" 
-                onClick={handleAdminButtonClick}
-              >
-                <Shield className="h-4 w-4" />
-                {user?.role === "admin" ? t("viewConfidentialUsage") : t("admin")}
-              </Button>
+              {user?.role === "admin" && (
+                <Button 
+                  variant="outline" 
+                  className="gap-2" 
+                  onClick={() => setAdminDashboardOpen(true)}
+                >
+                  <Shield className="h-4 w-4" />
+                  {t("viewConfidentialUsage")}
+                </Button>
+              )}
               <Button className="gap-2" onClick={() => setComposeOpen(true)}>
                 <Mail className="h-4 w-4" />
                 {t("composeEmail")}

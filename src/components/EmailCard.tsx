@@ -34,7 +34,7 @@ export const EmailCard = ({ email, onClick, selected }: EmailCardProps) => {
               <span className="truncate">{email.from}</span>
             </div>
           </div>
-          <UrgencyBadge score={email.urgency_score} label={email.urgency_label} />
+          <UrgencyBadge score={email.urgency_score} />
         </div>
       </CardHeader>
       <CardContent>

@@ -59,7 +59,7 @@ export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
             </div>
           </div>
           <div className="flex flex-col items-end gap-3">
-            <UrgencyBadge score={email.urgency_score} label={email.urgency_label} />
+            <UrgencyBadge score={email.urgency_score} />
             <Select value={viewLanguage} onValueChange={(val) => setViewLanguage(val as "original" | "selected")}>
               <SelectTrigger className="w-[200px]">
                 <SelectValue />
