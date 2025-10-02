@@ -10,9 +10,8 @@ import { AdminLoginModal } from "@/components/AdminLoginModal";
 import { AdminDashboard } from "@/components/AdminDashboard";
 import { mockEmails } from "@/data/mockEmails";
 import { EmailAnalysis } from "@/types/email";
-import { Search, Filter, Mail, Shield, LogOut } from "lucide-react";
+import { Search, Filter, Mail, Shield, LogOut, Inbox } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { MLogoIcon } from "@/components/MLogoIcon";
 
 const Index = () => {
   const { user, logout } = useAuth();
@@ -64,7 +63,7 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 bg-primary rounded-lg flex items-center justify-center">
-                <MLogoIcon className="h-7 w-7 text-primary-foreground" />
+                <Inbox className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-foreground" aria-label="IBMail analyzer">IBMail analyzer</h1>

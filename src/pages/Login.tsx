@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ForgotPasswordModal } from "@/components/ForgotPasswordModal";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Inbox } from "lucide-react";
 
 export default function Login() {
   const { login, isAuthenticated } = useAuth();
@@ -52,9 +53,7 @@ export default function Login() {
       <Card className="w-full max-w-md shadow-2xl border-0 relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <CardHeader className="space-y-3 text-center pb-4">
           <div className="mx-auto w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-2">
-            <svg className="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
+            <Inbox className="w-10 h-10 text-primary" />
           </div>
           <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
             IBMail analyzer
