@@ -57,6 +57,19 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        urgency: {
+          1: "hsl(var(--urgency-1))",
+          2: "hsl(var(--urgency-2))",
+          3: "hsl(var(--urgency-3))",
+          4: "hsl(var(--urgency-4))",
+          5: "hsl(var(--urgency-5))",
+        },
+        ibm: {
+          blue: "hsl(var(--ibm-blue))",
+          dark: "hsl(var(--ibm-dark))",
+        },
+        success: "hsl(var(--success))",
+        warning: "hsl(var(--warning))",
       },
       borderRadius: {
         lg: "var(--radius)",
