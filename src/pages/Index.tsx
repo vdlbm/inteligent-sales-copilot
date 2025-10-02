@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { EmailCard } from "@/components/EmailCard";
 import { EmailDetail } from "@/components/EmailDetail";
+import { ComposeEmailDialog } from "@/components/ComposeEmailDialog";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { mockEmails } from "@/data/mockEmails";
 import { EmailAnalysis } from "@/types/email";
 import { Search, Filter, Sparkles, Mail } from "lucide-react";
@@ -12,6 +14,7 @@ const Index = () => {
   const [selectedEmail, setSelectedEmail] = useState<EmailAnalysis | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [urgencyFilter, setUrgencyFilter] = useState<string>("all");
+  const [composeOpen, setComposeOpen] = useState(false);
 
   const filteredEmails = mockEmails
     .filter((email) => {
@@ -43,10 +46,13 @@ const Index = () => {
                 <p className="text-sm text-muted-foreground">Asistente inteligente para comerciales</p>
               </div>
             </div>
-            <Button className="gap-2">
-              <Mail className="h-4 w-4" />
-              Analizar Nuevo
-            </Button>
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <Button className="gap-2" onClick={() => setComposeOpen(true)}>
+                <Mail className="h-4 w-4" />
+                Compose Email
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -119,6 +125,8 @@ const Index = () => {
           </div>
         </div>
       </div>
+
+      <ComposeEmailDialog open={composeOpen} onOpenChange={setComposeOpen} />
     </div>
   );
 };

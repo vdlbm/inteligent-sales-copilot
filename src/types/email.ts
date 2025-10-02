@@ -28,4 +28,19 @@ export interface EmailAnalysis {
   confidence_overall: 'high' | 'medium' | 'low';
   notes?: string;
   date: string;
+  confidential?: boolean;
+  user_confirmation_for_confidential?: boolean;
+  audit_hash?: string;
+}
+
+export interface EmailDraft {
+  to: string;
+  cc?: string;
+  bcc?: string;
+  subject: string;
+  body: string;
+  confidential: boolean;
+  user_confirmation_for_confidential: boolean;
+  audit_hash: string;
+  attachments?: File[];
 }
