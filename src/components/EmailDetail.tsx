@@ -3,11 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UrgencyBadge } from "./UrgencyBadge";
 import { EmailAnalysis } from "@/types/email";
 import { Calendar, User, Building2, Briefcase, CalendarDays, CheckCircle2, Clock, Users, TrendingUp } from "lucide-react";
-import { useTranslation } from "@/hooks/useTranslation";
 
 interface EmailDetailProps {
   email: EmailAnalysis;
@@ -15,23 +13,11 @@ interface EmailDetailProps {
 }
 
 export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
-  const { t, language } = useTranslation();
-  const [viewLanguage, setViewLanguage] = React.useState<"original" | "selected">("original");
-
-  const translateText = (text: string): string => {
-    // Simple mock translation - in production, this would call a translation API
-    if (viewLanguage === "original" || email.language === language) {
-      return text;
-    }
-    // Return original for now - would integrate with translation service
-    return text;
-  };
-
   const handleActionClick = (action: any) => {
     if (action.template && action.contact && onActionClick) {
       onActionClick({
         to: action.contact,
-        subject: `Follow-up: ${translateText(email.subject)}`,
+        subject: `Follow-up: ${email.subject}`,
         body: action.template,
       });
     }
@@ -42,33 +28,24 @@ export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
       <CardHeader>
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
-            <CardTitle className="text-xl mb-2">{translateText(email.subject)}</CardTitle>
+            <CardTitle className="text-xl mb-2">{email.subject}</CardTitle>
             <div className="space-y-1 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4" />
-                <span><strong>{t("from")}:</strong> {email.from}</span>
+                <span><strong>From:</strong> {email.from}</span>
               </div>
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4" />
-                <span><strong>{t("to")}:</strong> {email.to}</span>
+                <span><strong>To:</strong> {email.to}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                <span><strong>{t("date")}:</strong> {email.date}</span>
+                <span><strong>Date:</strong> {email.date}</span>
               </div>
             </div>
           </div>
           <div className="flex flex-col items-end gap-3">
             <UrgencyBadge score={email.urgency_score} />
-            <Select value={viewLanguage} onValueChange={(val) => setViewLanguage(val as "original" | "selected")}>
-              <SelectTrigger className="w-[200px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="original">{t("viewInOriginal")}</SelectItem>
-                <SelectItem value="selected">{t("viewInSelected")}</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
         </div>
       </CardHeader>
@@ -78,9 +55,9 @@ export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
         <div>
           <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-primary" />
-            {t("summary")}
+            Summary
           </h3>
-          <p className="text-muted-foreground">{translateText(email.summary)}</p>
+          <p className="text-muted-foreground">{email.summary}</p>
         </div>
 
         <Separator />
@@ -89,7 +66,7 @@ export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
         <div>
           <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
             <Clock className="h-5 w-5 text-primary" />
-            {t("urgency")}
+            Urgency
           </h3>
           <p className="text-muted-foreground">
             This email has been classified as <strong>{email.urgency_label}</strong> urgency 
@@ -104,14 +81,14 @@ export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
             <div>
               <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
                 <CheckCircle2 className="h-5 w-5 text-primary" />
-                {t("extractedEntities")}
+                Extracted Entities
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {email.extracted_entities.people && email.extracted_entities.people.length > 0 && (
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium">
                       <User className="h-4 w-4" />
-                      {t("people")}
+                      People
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {email.extracted_entities.people.map((person, idx) => (
@@ -125,7 +102,7 @@ export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium">
                       <Building2 className="h-4 w-4" />
-                      {t("companies")}
+                      Companies
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {email.extracted_entities.companies.map((company, idx) => (
@@ -139,7 +116,7 @@ export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium">
                       <Briefcase className="h-4 w-4" />
-                      {t("roles")}
+                      Roles
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {email.extracted_entities.roles.map((role, idx) => (
@@ -153,7 +130,7 @@ export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium">
                       <CalendarDays className="h-4 w-4" />
-                      {t("dates")}
+                      Dates
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {email.extracted_entities.dates.map((date, idx) => (
@@ -167,7 +144,7 @@ export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium">
                       <CheckCircle2 className="h-4 w-4" />
-                      {t("tasks")}
+                      Tasks
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {email.extracted_entities.tasks.map((task, idx) => (
@@ -181,7 +158,7 @@ export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium">
                       <Clock className="h-4 w-4" />
-                      {t("deadlines")}
+                      Deadlines
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {email.extracted_entities.deadlines.map((deadline, idx) => (
@@ -202,20 +179,20 @@ export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
             <div>
               <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
                 <CheckCircle2 className="h-5 w-5 text-primary" />
-                {t("recommendedActions")}
+                Recommended Actions
               </h3>
               <div className="space-y-3">
                 {email.recommended_actions.map((action, idx) => (
                   <div key={idx} className="bg-muted/50 rounded-lg p-4">
                     <div className="flex items-start gap-3">
                       <Badge variant="outline" className="mt-1">
-                        {t("priority")} {action.priority}
+                        Priority {action.priority}
                       </Badge>
                       <div className="flex-1">
-                        <p className="font-medium">{translateText(action.action)}</p>
+                        <p className="font-medium">{action.action}</p>
                         {action.template && (
                           <p className="text-sm text-muted-foreground mt-2 italic">
-                            "{translateText(action.template)}"
+                            "{action.template}"
                           </p>
                         )}
                         {action.template && action.contact && (
@@ -225,7 +202,7 @@ export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
                             className="mt-3"
                             onClick={() => handleActionClick(action)}
                           >
-                            {t("composeEmail")}
+                            Compose Email
                           </Button>
                         )}
                       </div>
@@ -244,18 +221,18 @@ export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
             <div>
               <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
                 <Users className="h-5 w-5 text-primary" />
-                {t("suggestedContacts")}
+                Suggested Contacts
               </h3>
               <div className="space-y-3">
                 {email.contact_suggestions.map((contact, idx) => (
                   <div key={idx} className="bg-muted/50 rounded-lg p-4">
                     <p className="font-medium">{contact.name}</p>
                     <p className="text-sm text-muted-foreground mt-1">
-                      <strong>{t("reason")}:</strong> {translateText(contact.reason)}
+                      <strong>Reason:</strong> {contact.reason}
                     </p>
                     {contact.last_interaction && (
                       <p className="text-xs text-muted-foreground mt-1">
-                        {t("lastInteraction")}: {contact.last_interaction}
+                        Last interaction: {contact.last_interaction}
                       </p>
                     )}
                   </div>
@@ -270,7 +247,7 @@ export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
         <div>
           <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
             <Calendar className="h-5 w-5 text-primary" />
-            {t("originalEmailRaw")}
+            Original email (raw)
           </h3>
           <div className="bg-muted/30 rounded-lg p-4">
             <p className="text-sm whitespace-pre-wrap text-foreground leading-relaxed">{email.body}</p>

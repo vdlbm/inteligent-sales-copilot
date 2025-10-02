@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTranslation } from "@/hooks/useTranslation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,25 +8,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ForgotPasswordModal } from "@/components/ForgotPasswordModal";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { LanguageToggle } from "@/components/LanguageToggle";
 
 export default function Login() {
   const { login, isAuthenticated } = useAuth();
-  const { t } = useTranslation();
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [rememberMe, setRememberMe] = React.useState(false);
   const [error, setError] = React.useState("");
-  const [showForgotPassword, setShowForgotPassword] = React.useState(false);
+  const [forgotPasswordOpen, setForgotPasswordOpen] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setIsLoading(true);
     
-    const success = login(username, password);
-    if (!success) {
-      setError(t("invalidCredentials"));
-    }
+    setTimeout(() => {
+      const success = login(username, password);
+      if (!success) {
+        setError("Invalid credentials");
+      }
+      setIsLoading(false);
+    }, 300);
   };
 
   if (isAuthenticated) {
@@ -42,8 +44,8 @@ export default function Login() {
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
       </div>
 
-      <div className="absolute top-4 right-4 flex gap-2 z-10">
-        <LanguageToggle />
+      {/* Top controls */}
+      <div className="absolute top-4 right-4">
         <ThemeToggle />
       </div>
       
@@ -55,43 +57,49 @@ export default function Login() {
             </svg>
           </div>
           <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-            {t("ibmEmailAnalyzer")}
+            IBMail analyzer
           </CardTitle>
           <CardDescription className="text-base">
-            {t("welcomeToSalesProductivity")}
+            Welcome to Sales Productivity
           </CardDescription>
         </CardHeader>
         <CardContent className="px-6 pb-6">
           <form onSubmit={handleSubmit} className="space-y-5">
+            {error && (
+              <Alert variant="destructive" className="animate-in fade-in slide-in-from-top-2">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            
             <div className="space-y-2">
               <Label htmlFor="username" className="text-sm font-medium">
-                {t("username")}
+                Username
               </Label>
               <Input
                 id="username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder={t("username")}
+                placeholder="Username"
                 className="h-11 transition-all focus:ring-2 focus:ring-primary/20"
                 required
-                aria-label={t("username")}
+                aria-label="Username"
               />
             </div>
             
             <div className="space-y-2">
               <Label htmlFor="password" className="text-sm font-medium">
-                {t("password")}
+                Password
               </Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder={t("password")}
+                placeholder="Password"
                 className="h-11 transition-all focus:ring-2 focus:ring-primary/20"
                 required
-                aria-label={t("password")}
+                aria-label="Password"
               />
             </div>
 
@@ -108,41 +116,36 @@ export default function Login() {
                   htmlFor="remember"
                   className="text-sm font-medium leading-none cursor-pointer select-none"
                 >
-                  {t("rememberMe")}
+                  Remember me
                 </label>
               </div>
               <button
                 type="button"
-                onClick={() => setShowForgotPassword(true)}
+                onClick={() => setForgotPasswordOpen(true)}
                 className="text-sm text-primary hover:underline font-medium transition-colors"
               >
-                {t("forgotPassword")}
+                Forgot your password?
               </button>
             </div>
-
-            {error && (
-              <Alert variant="destructive" className="animate-in fade-in slide-in-from-top-2">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
 
             <Button 
               type="submit" 
               className="w-full h-11 font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+              disabled={isLoading}
             >
-              {t("signIn")}
+              {isLoading ? "..." : "Sign In"}
             </Button>
 
             <p className="text-xs text-center text-muted-foreground pt-2 border-t">
-              {t("testUsers")}
+              Test users: victor/victor (user), admin/admin (admin)
             </p>
           </form>
         </CardContent>
       </Card>
 
       <ForgotPasswordModal 
-        open={showForgotPassword}
-        onOpenChange={setShowForgotPassword}
+        open={forgotPasswordOpen}
+        onOpenChange={setForgotPasswordOpen}
       />
     </div>
   );

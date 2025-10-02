@@ -6,18 +6,15 @@ import { EmailCard } from "@/components/EmailCard";
 import { EmailDetail } from "@/components/EmailDetail";
 import { ComposeEmailDialog } from "@/components/ComposeEmailDialog";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { LanguageToggle } from "@/components/LanguageToggle";
 import { AdminLoginModal } from "@/components/AdminLoginModal";
 import { AdminDashboard } from "@/components/AdminDashboard";
 import { mockEmails } from "@/data/mockEmails";
 import { EmailAnalysis } from "@/types/email";
 import { Search, Filter, Mail, Shield, LogOut } from "lucide-react";
-import { useTranslation } from "@/hooks/useTranslation";
 import { useAuth } from "@/contexts/AuthContext";
 import { MLogoIcon } from "@/components/MLogoIcon";
 
 const Index = () => {
-  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const [selectedEmail, setSelectedEmail] = React.useState<EmailAnalysis | null>(null);
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -71,14 +68,13 @@ const Index = () => {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-foreground" aria-label="IBMail analyzer">IBMail analyzer</h1>
-                <p className="text-sm text-muted-foreground">{t("appSubtitle")}</p>
+                <p className="text-sm text-muted-foreground">Intelligent assistant for sales professionals</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <div className="text-sm text-muted-foreground mr-2">
-                {t("loggedInAs")}: <span className="font-medium text-foreground">{user?.name}</span>
+                Logged in as: <span className="font-medium text-foreground">{user?.name}</span>
               </div>
-              <LanguageToggle />
               <ThemeToggle />
               {user?.role === "admin" && (
                 <Button 
@@ -87,14 +83,14 @@ const Index = () => {
                   onClick={() => setAdminDashboardOpen(true)}
                 >
                   <Shield className="h-4 w-4" />
-                  {t("viewConfidentialUsage")}
+                  View Confidential Usage
                 </Button>
               )}
               <Button className="gap-2" onClick={() => setComposeOpen(true)}>
                 <Mail className="h-4 w-4" />
-                {t("composeEmail")}
+                Compose Email
               </Button>
-              <Button variant="ghost" size="icon" onClick={logout} title={t("logout")}>
+              <Button variant="ghost" size="icon" onClick={logout} title="Logout">
                 <LogOut className="h-4 w-4" />
               </Button>
             </div>
@@ -111,7 +107,7 @@ const Index = () => {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder={t("searchEmails")}
+                  placeholder="Search emails..."
                   className="pl-10"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -122,15 +118,15 @@ const Index = () => {
                 <Filter className="h-4 w-4 text-muted-foreground" />
                 <Select value={urgencyFilter} onValueChange={setUrgencyFilter}>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder={t("filterByUrgency")} />
+                    <SelectValue placeholder="Filter by urgency" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">{t("allUrgencies")}</SelectItem>
-                    <SelectItem value="5">{t("critical")} (5)</SelectItem>
-                    <SelectItem value="4">{t("high")} (4)</SelectItem>
-                    <SelectItem value="3">{t("medium")} (3)</SelectItem>
-                    <SelectItem value="2">{t("lowMedium")} (2)</SelectItem>
-                    <SelectItem value="1">{t("low")} (1)</SelectItem>
+                    <SelectItem value="all">All urgencies</SelectItem>
+                    <SelectItem value="5">Critical (5)</SelectItem>
+                    <SelectItem value="4">High (4)</SelectItem>
+                    <SelectItem value="3">Medium (3)</SelectItem>
+                    <SelectItem value="2">Low (2)</SelectItem>
+                    <SelectItem value="1">Minimal (1)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -148,7 +144,7 @@ const Index = () => {
               {filteredEmails.length === 0 && (
                 <div className="text-center py-8 text-muted-foreground">
                   <Mail className="h-12 w-12 mx-auto mb-3 opacity-20" />
-                  <p>{t("noEmailsFound")}</p>
+                  <p>No emails found</p>
                 </div>
               )}
             </div>
@@ -162,8 +158,8 @@ const Index = () => {
               <div className="flex items-center justify-center h-full">
                 <div className="text-center text-muted-foreground">
                   <Mail className="h-16 w-16 mx-auto mb-4 opacity-20" />
-                  <p className="text-lg font-medium">{t("selectEmail")}</p>
-                  <p className="text-sm mt-2">{t("fullAnalysis")}</p>
+                  <p className="text-lg font-medium">Select an email to view details</p>
+                  <p className="text-sm mt-2">Full analysis will appear here</p>
                 </div>
               </div>
             )}
