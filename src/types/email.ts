@@ -7,6 +7,7 @@ export interface EmailAnalysis {
   summary: string;
   urgency_score: 1 | 2 | 3 | 4 | 5;
   urgency_label: string;
+  body: string;
   extracted_entities: {
     people?: string[];
     companies?: string[];
@@ -26,13 +27,20 @@ export interface EmailAnalysis {
     reason: string;
     last_interaction?: string;
   }>;
-  confidence_overall: 'high' | 'medium' | 'low';
   notes?: string;
   date: string;
   confidential?: boolean;
   user_confirmation_for_confidential?: boolean;
   audit_hash?: string;
   ui_language?: "en" | "es";
+}
+
+export interface UserStats {
+  name: string;
+  username: string;
+  total_processed: number;
+  confidential_used_count: number;
+  confidential_percentage: number;
 }
 
 export interface EmailDraft {
@@ -49,9 +57,6 @@ export interface EmailDraft {
 }
 
 export interface AdminDashboardData {
-  user_selected: string;
-  confidential_usage_percent: {
-    used: number;
-    not_used: number;
-  };
+  users: UserStats[];
+  selected_user: string | null;
 }

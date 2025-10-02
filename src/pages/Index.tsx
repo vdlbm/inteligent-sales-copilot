@@ -11,11 +11,13 @@ import { AdminLoginModal } from "@/components/AdminLoginModal";
 import { AdminDashboard } from "@/components/AdminDashboard";
 import { mockEmails } from "@/data/mockEmails";
 import { EmailAnalysis } from "@/types/email";
-import { Search, Filter, Sparkles, Mail, Shield } from "lucide-react";
+import { Search, Filter, Sparkles, Mail, Shield, LogOut } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
   const { t } = useTranslation();
+  const { user, logout } = useAuth();
   const [selectedEmail, setSelectedEmail] = React.useState<EmailAnalysis | null>(null);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [urgencyFilter, setUrgencyFilter] = React.useState<string>("all");
@@ -31,6 +33,14 @@ const Index = () => {
 
   const handleAdminLogin = () => {
     setAdminDashboardOpen(true);
+  };
+
+  const handleAdminButtonClick = () => {
+    if (user?.role === "admin") {
+      setAdminDashboardOpen(true);
+    } else {
+      setAdminLoginOpen(true);
+    }
   };
 
   const filteredEmails = mockEmails
@@ -64,15 +74,25 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <div className="text-sm text-muted-foreground mr-2">
+                {t("loggedInAs")}: <span className="font-medium text-foreground">{user?.name}</span>
+              </div>
               <LanguageToggle />
               <ThemeToggle />
-              <Button variant="outline" className="gap-2" onClick={() => setAdminLoginOpen(true)}>
+              <Button 
+                variant="outline" 
+                className="gap-2" 
+                onClick={handleAdminButtonClick}
+              >
                 <Shield className="h-4 w-4" />
-                {t("admin")}
+                {user?.role === "admin" ? t("viewConfidentialUsage") : t("admin")}
               </Button>
               <Button className="gap-2" onClick={() => setComposeOpen(true)}>
                 <Mail className="h-4 w-4" />
                 {t("composeEmail")}
+              </Button>
+              <Button variant="ghost" size="icon" onClick={logout} title={t("logout")}>
+                <LogOut className="h-4 w-4" />
               </Button>
             </div>
           </div>

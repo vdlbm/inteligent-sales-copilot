@@ -59,9 +59,6 @@ export const EmailCard = ({ email, onClick, selected }: EmailCardProps) => {
               minute: '2-digit'
             })}
           </div>
-          <Badge variant="outline" className="text-xs">
-            {email.confidence_overall}
-          </Badge>
         </div>
       </CardContent>
     </Card>

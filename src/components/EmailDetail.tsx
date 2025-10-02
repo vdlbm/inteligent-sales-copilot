@@ -265,17 +265,16 @@ export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
           </>
         )}
 
-        {/* Confidence */}
+        {/* Original Email Body */}
         <Separator />
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">{t("confidence")}:</span>
-          <Badge variant={
-            email.confidence_overall === 'high' ? 'default' :
-            email.confidence_overall === 'medium' ? 'secondary' :
-            'outline'
-          }>
-            {email.confidence_overall.toUpperCase()}
-          </Badge>
+        <div>
+          <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
+            <Calendar className="h-5 w-5 text-primary" />
+            {t("originalEmailRaw")}
+          </h3>
+          <div className="bg-muted/30 rounded-lg p-4">
+            <pre className="text-sm whitespace-pre-wrap font-mono text-foreground">{email.body}</pre>
+          </div>
         </div>
       </CardContent>
     </Card>

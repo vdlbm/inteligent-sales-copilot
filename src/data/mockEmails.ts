@@ -10,6 +10,7 @@ export const mockEmails: EmailAnalysis[] = [
     summary: "Cliente solicita propuesta para migración cloud con deadline crítico de 5 días. Presupuesto estimado 2M€.",
     urgency_score: 5,
     urgency_label: "Crítica",
+    body: "Estimados,\n\nEscribo para solicitar una propuesta formal (RFP) para la migración de nuestra infraestructura actual a la nube. El proyecto es de carácter urgente y necesitamos recibir las propuestas antes del 15 de octubre.\n\nPresupuesto estimado: 2M€\n\nGracias,\nMaría González\nCTO TechCorp",
     extracted_entities: {
       people: ["María González", "CTO TechCorp"],
       companies: ["TechCorp", "IBM"],
@@ -46,7 +47,6 @@ export const mockEmails: EmailAnalysis[] = [
         last_interaction: "Hace 1 semana"
       }
     ],
-    confidence_overall: "high",
     notes: "Cliente de alto valor. Revisar propuestas anteriores de TechCorp para referencias.",
     date: "2025-10-10T09:15:00Z"
   },
@@ -59,6 +59,7 @@ export const mockEmails: EmailAnalysis[] = [
     summary: "Cliente interesado en soluciones de IA tras reunión. Solicita información adicional sobre Watson.",
     urgency_score: 3,
     urgency_label: "Media",
+    body: "Hola equipo IBM,\n\nGracias por la reunión de la semana pasada sobre soluciones de IA. Me gustaría recibir más información sobre Watson Analytics y ver cómo podríamos implementarlo en nuestro departamento de innovación.\n\n¿Podrían enviarme algunos casos de éxito?\n\nSaludos,\nCarlos Ruiz\nDirector de Innovación",
     extracted_entities: {
       people: ["Carlos Ruiz", "Director Innovación"],
       companies: ["FinanCorp", "IBM Watson"],
@@ -84,7 +85,6 @@ export const mockEmails: EmailAnalysis[] = [
         last_interaction: "Hace 2 semanas"
       }
     ],
-    confidence_overall: "high",
     date: "2025-10-09T14:30:00Z"
   },
   {
@@ -96,6 +96,7 @@ export const mockEmails: EmailAnalysis[] = [
     summary: "Consulta general de empresa pequeña sobre servicios cloud. Sin urgencia aparente.",
     urgency_score: 1,
     urgency_label: "Baja",
+    body: "Buenos días,\n\nSomos una pequeña empresa y nos gustaría conocer más sobre sus servicios cloud. ¿Podrían enviarnos información general?\n\nGracias.",
     extracted_entities: {
       companies: ["SmallBiz"],
       tasks: ["Responder con información general"]
@@ -108,7 +109,6 @@ export const mockEmails: EmailAnalysis[] = [
       }
     ],
     contact_suggestions: [],
-    confidence_overall: "medium",
     notes: "Lead de baja prioridad. Respuesta automatizada apropiada.",
     date: "2025-10-08T16:45:00Z"
   },
@@ -121,6 +121,7 @@ export const mockEmails: EmailAnalysis[] = [
     summary: "Cliente existente solicita información sobre renovación de contrato que vence en 21 días.",
     urgency_score: 4,
     urgency_label: "Alta",
+    body: "Hola,\n\nNuestro contrato de mantenimiento vence el 31 de octubre. Necesitamos discutir la renovación y ver si hay nuevas opciones disponibles.\n\n¿Podemos agendar una reunión esta semana?\n\nJavier Fernández\nCOO, RetailChain",
     extracted_entities: {
       people: ["Javier Fernández", "COO"],
       companies: ["RetailChain", "IBM"],
@@ -147,7 +148,6 @@ export const mockEmails: EmailAnalysis[] = [
         last_interaction: "Hace 5 días"
       }
     ],
-    confidence_overall: "high",
     notes: "Cliente fidelizado. Importante mantener la relación. Considerar upgrade de servicios.",
     date: "2025-10-09T11:20:00Z"
   },
@@ -160,6 +160,7 @@ export const mockEmails: EmailAnalysis[] = [
     summary: "Nuevo contacto del sector salud interesado en soluciones de ciberseguridad y cumplimiento normativo.",
     urgency_score: 2,
     urgency_label: "Baja-Media",
+    body: "Buenos días,\n\nSoy la CISO de HealthTech Solutions y estamos buscando mejorar nuestras soluciones de ciberseguridad. Nos gustaría conocer las opciones de IBM Security especialmente orientadas al sector salud y cumplimiento normativo.\n\n¿Podrían compartir información?\n\nSaludos,\nPatricia Moreno",
     extracted_entities: {
       people: ["Patricia Moreno", "CISO"],
       companies: ["HealthTech Solutions", "IBM Security"],
@@ -184,7 +185,6 @@ export const mockEmails: EmailAnalysis[] = [
         last_interaction: "Hace 1 mes"
       }
     ],
-    confidence_overall: "medium",
     notes: "Oportunidad interesante en sector regulado. Alto potencial a medio plazo.",
     date: "2025-10-10T08:00:00Z"
   }
