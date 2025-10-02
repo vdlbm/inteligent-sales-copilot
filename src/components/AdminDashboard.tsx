@@ -1,8 +1,8 @@
-import * as React from "react";
+import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { Card, CardContent } from "@/components/ui/card";
 import { useTranslation } from "@/hooks/useTranslation";
 
 interface AdminDashboardProps {
@@ -18,20 +18,11 @@ const mockUserData = {
   "Sofía Torres": { confidential: 71, nonConfidential: 29 },
 };
 
-const COLORS = {
-  confidential: "hsl(0, 84%, 60%)",
-  nonConfidential: "hsl(142, 76%, 36%)",
-};
-
 export function AdminDashboard({ open, onOpenChange }: AdminDashboardProps) {
   const { t } = useTranslation();
   const [selectedUser, setSelectedUser] = React.useState<keyof typeof mockUserData>("María Gómez");
 
   const userData = mockUserData[selectedUser];
-  const chartData = [
-    { name: t("confidentialUsage"), value: userData.confidential },
-    { name: t("nonConfidentialUsage"), value: userData.nonConfidential },
-  ];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -59,36 +50,53 @@ export function AdminDashboard({ open, onOpenChange }: AdminDashboardProps) {
 
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">{t("usageStats")}</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={chartData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, value }) => `${name}: ${value}%`}
-                  outerRadius={100}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  <Cell fill={COLORS.confidential} />
-                  <Cell fill={COLORS.nonConfidential} />
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
             
-            <div className="flex justify-center gap-8 text-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded" style={{ backgroundColor: COLORS.confidential }} />
-                <span>{t("confidentialUsage")}: {userData.confidential}%</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded" style={{ backgroundColor: COLORS.nonConfidential }} />
-                <span>{t("nonConfidentialUsage")}: {userData.nonConfidential}%</span>
-              </div>
-            </div>
+            <Card>
+              <CardContent className="pt-6">
+                <div className="space-y-6">
+                  {/* Visual bar chart representation */}
+                  <div className="space-y-4">
+                    <div>
+                      <div className="flex justify-between mb-2">
+                        <span className="text-sm font-medium">{t("confidentialUsage")}</span>
+                        <span className="text-sm font-semibold">{userData.confidential}%</span>
+                      </div>
+                      <div className="h-8 bg-muted rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-destructive transition-all duration-500"
+                          style={{ width: `${userData.confidential}%` }}
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <div className="flex justify-between mb-2">
+                        <span className="text-sm font-medium">{t("nonConfidentialUsage")}</span>
+                        <span className="text-sm font-semibold">{userData.nonConfidential}%</span>
+                      </div>
+                      <div className="h-8 bg-muted rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-green-600 transition-all duration-500"
+                          style={{ width: `${userData.nonConfidential}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Summary stats */}
+                  <div className="grid grid-cols-2 gap-4 pt-4 border-t">
+                    <div className="text-center p-4 bg-destructive/10 rounded-lg">
+                      <div className="text-3xl font-bold text-destructive">{userData.confidential}%</div>
+                      <div className="text-sm text-muted-foreground mt-1">{t("confidentialUsage")}</div>
+                    </div>
+                    <div className="text-center p-4 bg-green-600/10 rounded-lg">
+                      <div className="text-3xl font-bold text-green-600">{userData.nonConfidential}%</div>
+                      <div className="text-sm text-muted-foreground mt-1">{t("nonConfidentialUsage")}</div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </DialogContent>
