@@ -5,6 +5,8 @@ export interface EmailAnalysis {
   subject: string;
   language: string;
   summary: string;
+  summary_original?: string;
+  summary_translated?: string;
   urgency_score: 1 | 2 | 3 | 4 | 5;
   urgency_label: string;
   body: string;

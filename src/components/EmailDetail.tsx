@@ -273,7 +273,7 @@ export const EmailDetail = ({ email, onActionClick }: EmailDetailProps) => {
             {t("originalEmailRaw")}
           </h3>
           <div className="bg-muted/30 rounded-lg p-4">
-            <pre className="text-sm whitespace-pre-wrap font-mono text-foreground">{email.body}</pre>
+            <p className="text-sm whitespace-pre-wrap text-foreground leading-relaxed">{email.body}</p>
           </div>
         </div>
       </CardContent>

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { EmailAnalysis } from "@/types/email";
 import { Mail, Clock, User, Building2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface EmailCardProps {
   email: EmailAnalysis;
@@ -12,6 +13,17 @@ interface EmailCardProps {
 }
 
 export const EmailCard = ({ email, onClick, selected }: EmailCardProps) => {
+  const { t, language } = useTranslation();
+  
+  // Display translated summary if available and UI language differs from original
+  const displaySummary = 
+    email.summary_translated && language !== email.language 
+      ? email.summary_translated 
+      : email.summary_original || email.summary;
+  
+  const hasTranslationIssue = 
+    language !== email.language && !email.summary_translated && email.summary_original;
+  
   return (
     <Card
       className={cn(
@@ -38,7 +50,14 @@ export const EmailCard = ({ email, onClick, selected }: EmailCardProps) => {
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-foreground mb-3 line-clamp-2">{email.summary}</p>
+        <p className="text-sm text-foreground mb-3 line-clamp-2">
+          {displaySummary}
+          {hasTranslationIssue && (
+            <span className="text-xs text-muted-foreground ml-2">
+              ({t("translationUnavailable")})
+            </span>
+          )}
+        </p>
         
         <div className="flex flex-wrap gap-2 mb-3">
           {email.extracted_entities.companies?.slice(0, 2).map((company, idx) => (

@@ -1,15 +1,16 @@
 export const translations = {
   en: {
     // Header
-    appTitle: "IBM Email Analyzer",
+    appTitle: "IBMail analyzer",
     appSubtitle: "Intelligent assistant for sales professionals",
-    ibmEmailAnalyzer: "IBM Email Analyzer",
+    ibmEmailAnalyzer: "IBMail analyzer",
     composeEmail: "Compose Email",
     admin: "Admin",
     translate: "Traducir",
     viewConfidentialUsage: "View Confidential Usage",
     loggedInAs: "Logged in as",
     logout: "Logout",
+    translationUnavailable: "Translation unavailable",
     
     // Search & Filters
     searchEmails: "Search emails...",
@@ -116,15 +117,16 @@ export const translations = {
   },
   es: {
     // Header
-    appTitle: "Analizador de Correos IBM",
+    appTitle: "IBMail analyzer",
     appSubtitle: "Asistente inteligente para comerciales",
-    ibmEmailAnalyzer: "Analizador de Correos IBM",
+    ibmEmailAnalyzer: "IBMail analyzer",
     composeEmail: "Redactar Correo",
     admin: "Admin",
     translate: "Translate",
     viewConfidentialUsage: "Visualizar uso confidencialidad",
     loggedInAs: "Conectado como",
     logout: "Cerrar Sesión",
+    translationUnavailable: "Traducción no disponible",
     
     // Search & Filters
     searchEmails: "Buscar correos...",
