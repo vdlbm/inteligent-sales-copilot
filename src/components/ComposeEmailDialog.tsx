@@ -1,4 +1,4 @@
-import { useState } from "react";
+import * as React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,11 +18,11 @@ interface ComposeEmailDialogProps {
 
 export function ComposeEmailDialog({ open, onOpenChange }: ComposeEmailDialogProps) {
   const { toast } = useToast();
-  const [showCcBcc, setShowCcBcc] = useState(false);
-  const [confidential, setConfidential] = useState(false);
-  const [showConfidentialWarning, setShowConfidentialWarning] = useState(false);
-  const [showSendConfirmation, setShowSendConfirmation] = useState(false);
-  const [draft, setDraft] = useState<Partial<EmailDraft>>({
+  const [showCcBcc, setShowCcBcc] = React.useState(false);
+  const [confidential, setConfidential] = React.useState(false);
+  const [showConfidentialWarning, setShowConfidentialWarning] = React.useState(false);
+  const [showSendConfirmation, setShowSendConfirmation] = React.useState(false);
+  const [draft, setDraft] = React.useState<Partial<EmailDraft>>({
     to: "",
     cc: "",
     bcc: "",

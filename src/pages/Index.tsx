@@ -1,4 +1,4 @@
-import { useState } from "react";
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -11,10 +11,10 @@ import { EmailAnalysis } from "@/types/email";
 import { Search, Filter, Sparkles, Mail } from "lucide-react";
 
 const Index = () => {
-  const [selectedEmail, setSelectedEmail] = useState<EmailAnalysis | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [urgencyFilter, setUrgencyFilter] = useState<string>("all");
-  const [composeOpen, setComposeOpen] = useState(false);
+  const [selectedEmail, setSelectedEmail] = React.useState<EmailAnalysis | null>(null);
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [urgencyFilter, setUrgencyFilter] = React.useState<string>("all");
+  const [composeOpen, setComposeOpen] = React.useState(false);
 
   const filteredEmails = mockEmails
     .filter((email) => {
